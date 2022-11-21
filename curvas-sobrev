@@ -1,0 +1,43 @@
+# Curvas de sobrevivência para as covariáveis estimadas por Kaplan-Meier.
+
+par(mfrow = c(2,2))
+
+var_1 <- Surv(tempos,cens)
+km_var_1 <- survfit(var_1 ~ amostra$fxetaria, data=amostra)
+
+plot(km_var_1, col = c(1:3), xlab = "Tempo", ylab = "S(t) estimada", conf.int = F, 
+     xlim=c(0,420), cex.axis=1.1, cex.lab=1.1, lty = 1, lwd = 3, main = "Faixa Etária")
+legend("topright", lty=1, c("Até 24 anos", "25 a 49 anos", "50 anos ou mais"),
+       col=c(1:5),lwd=3, bty= "o", box.lwd = 1, box.lty = 2, cex=0.9, text.width = 90)
+
+
+
+var_3 <- Surv(tempos,cens)
+km_var_3 <- survfit(var_3 ~ amostra$fxremunmedia, data=amostra)
+
+plot(km_var_3, col = c(1:5), xlab = "Tempo", ylab = "S(t) estimada", conf.int = F, 
+     xlim=c(0,420), ylim = c(0.0,1.0), cex.axis=1.1, cex.lab=1.1, lty = 1, lwd = 3, main = "Faixa de Remuneração Média")
+legend("topright", lty=1, c("0-3", "3-7", "7+"),
+       col=c(1:5),lwd=3, bty= "o", box.lwd = 1, box.lty = 2, cex=0.9, text.width = 70)
+
+
+
+var_5 <- Surv(tempos,cens)
+km_var_5 <- survfit(var_5 ~ amostra$raca.cor, data=amostra)
+
+plot(km_var_5, col = c(1:3), xlab = "Tempo", ylab = "S(t) estimada", conf.int = F, 
+     xlim=c(0,420), cex.axis=1.1, cex.lab=1.1, lty = 1, lwd = 3, main = "Raça/Cor")
+legend("topright", lty=1, c("Outro", "Branca/Amarela", "Preta/Parda"),
+       col=c(1:4),lwd=3, bty= "o", box.lwd = 1, box.lty = 2, cex=0.9, text.width = 90)
+
+
+var_8 <- Surv(tempos,cens)
+km_var_8 <- survfit(var_8 ~ amostra$escolaridade, data=amostra)
+
+plot(km_var_8, col = c(1:5), xlab = "Tempo", ylab = "S(t) estimada", conf.int = F, 
+     xlim=c(0,420), cex.axis=1.1, cex.lab=1.1, lty = 1, lwd = 3, main = "Escolaridade")
+legend("topright", lty=1, c("Analfabeto", "Fundamental incomp.", "Fundamental completo", "Médio completo", "Superior completo"),
+       col=c(1:6),lwd=3, bty= "o", box.lwd = 1, box.lty = 2, cex=0.9, text.width = 120)
+
+
+
