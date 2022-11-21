@@ -1,0 +1,144 @@
+library(gridExtra)
+library(ggplot2)
+
+
+variavel <- c(rep("Preta/Parda" , 2) , rep("Branca/Amarela" , 2) , rep("Outros" , 2))
+condition <- rep(c("Desligado" , "Não Desligado") , 3)
+value <- c(0.6931169, 0.6583439, 0.1926952, 0.2348638, 0.1141879, 0.1067924)
+data <- data.frame(variavel,condition,value)
+
+p <- ggplot(data, aes(fill=variavel, y=value, x=condition)) + 
+  geom_bar(position="stack", stat="identity", width = 0.40) +
+  #scale_fill_viridis(discrete = T) +
+  scale_x_discrete(labels = c("Desligado" , "Não Desligado"), 
+                   limits = c("Desligado" , "Não Desligado"))+
+  ggtitle("Raça/Cor") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title = element_blank(), legend.position="bottom") +
+  ylab("Frequência relativa") + xlab(" ")
+
+
+variavel2 <- c(rep("Masculino" , 2) , rep("Feminino" , 2))
+condition2 <- rep(c("Desligado" , "Não Desligado") , 2)
+value2 <- c(0.6863126,0.6287518,0.3136874,0.3712482)
+data2 <- data.frame(variavel2,condition2,value2)
+
+p2 <- ggplot(data2, aes(fill=variavel2, y=value2, x=condition2)) + 
+  geom_bar(position="stack", stat="identity", width = 0.40) +
+  #scale_fill_viridis(discrete = T) +
+  scale_x_discrete(labels = c("Desligado" , "Não Desligado"), 
+                   limits = c("Desligado" , "Não Desligado"))+
+  ggtitle("Sexo do Trabalhador") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title = element_blank(), legend.position="bottom") +
+  ylab("Frequência relativa") + xlab(" ")
+
+
+variavel3 <- c(rep("Até 24 anos" , 2) , rep("25-49" , 2), rep("50+" , 2) )
+condition3 <- rep(c("Desligado" , "Não Desligado") , 3)
+value3 <- c(0.2393334, 0.1728003,0.6879046,0.7186878,0.07276201,0.1085119)
+data3 <- data.frame(variavel3,condition3,value3)
+
+p3 <-ggplot(data3, aes(fill=variavel3, y=value3, x=condition3)) + 
+  geom_bar(position="stack", stat="identity", width = 0.40) +
+  #scale_fill_viridis(discrete = T) +
+  scale_x_discrete(labels = c("Desligado" , "Não Desligado"), 
+                   limits = c("Desligado" , "Não Desligado"))+
+  scale_fill_discrete(name = "", labels = c("Até 24 anos", "25-49", "50+"))+
+  ggtitle("Faixa Etária") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title = element_blank(), legend.position="bottom") +
+  ylab("Frequência relativa") + xlab(" ")
+
+
+variavel4 <- c(rep("0-3" , 2) , rep("3-7" , 2), rep("7+" , 2) )
+condition4 <- rep(c("Desligado" , "Não Desligado") , 3)
+value4 <- c(0.9290178,0.8829252,0.05525289,0.08741036,0.01572929,0.02966442)
+data4 <- data.frame(variavel4,condition4,value4)
+
+p4 <- ggplot(data4, aes(fill=variavel4, y=value4, x=condition4)) + 
+  geom_bar(position="stack", stat="identity", width = 0.40) +
+  #scale_fill_viridis(discrete = T) +
+  scale_x_discrete(labels = c("Desligado" , "Não Desligado"), 
+                   limits = c("Desligado" , "Não Desligado"))+
+  scale_fill_discrete(name = " ", labels = c("0-3","3-7","7+"))+
+  ggtitle("Faixa de Remuneração Média") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title = element_blank(), legend.position="bottom") +
+  ylab("Frequência relativa") + xlab(" ")
+
+
+
+variavel <- c(rep("Até 40h" , 2) , rep("40h - 44h" , 2))
+condition <- rep(c("Desligado" , "Não Desligado") , 2)
+value <- c(0.1096111, 0.1503256,0.8903889,0.8496744)
+data <- data.frame(variavel,condition,value)
+
+p5 <- ggplot(data, aes(fill=variavel, y=value, x=condition)) + 
+  geom_bar(position="stack", stat="identity", width = 0.40) +
+  #scale_fill_viridis(discrete = T) +
+  scale_x_discrete(labels = c("Desligado" , "Não Desligado"), 
+                   limits = c("Desligado" , "Não Desligado"))+
+  #scale_fill_discrete(name = " ", labels = c("Até 40h","40h - 44h"))+
+  ggtitle("Faixa Horária Contratual") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title = element_blank(), legend.position="bottom") +
+  ylab("Frequência relativa") + xlab(" ")
+
+
+
+variavel <- c(rep("Micro" , 2) , rep("Pequena" , 2), rep("Média/Grande" , 2) )
+condition <- rep(c("Desligado" , "Não Desligado") , 3)
+value <- c(0.3957146,0.3387901,0.2467119,0.2470308,0.3575735,0.4141791)
+data <- data.frame(variavel,condition,value)
+
+p6 <- ggplot(data, aes(fill=variavel, y=value, x=condition)) + 
+  geom_bar(position="stack", stat="identity", width = 0.40) +
+  #scale_fill_viridis(discrete = T) +
+  scale_x_discrete(labels = c("Desligado" , "Não Desligado"), 
+                   limits = c("Desligado" , "Não Desligado"))+
+  scale_fill_discrete(name = " ", labels = c("Micro","Pequena","Média/Grande"))+
+  ggtitle("Tamanho do Estabelecimento") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title = element_blank(), legend.position="bottom") +
+  ylab("Frequência relativa") + xlab(" ")
+
+
+
+variavel <- c(rep("Analfabeto" , 2) , rep("Fund. Incompleto" , 2), rep("Fund. Completo" , 2), rep("Médio Completo" , 2), rep("Superior Completo" , 2) )
+condition <- rep(c("Desligado" , "Não Desligado") , 5)
+value <- c(0.01207949,0.008362001,0.17197071,0.124926406,0.17162815 ,0.151810267,0.58406367,0.606828411,0.06025797,0.108072915 )
+data <- data.frame(variavel,condition,value)
+
+p7 <- ggplot(data, aes(fill=variavel, y=value, x=condition)) + 
+  geom_bar(position="stack", stat="identity", width = 0.40) +
+  #scale_fill_viridis(discrete = T) +
+  scale_x_discrete(labels = c("Desligado" , "Não Desligado"), 
+                   limits = c("Desligado" , "Não Desligado"))+
+  scale_fill_discrete(name = "", labels = c("Analfabeto", "Fund. Incompleto",  "Fund. Completo", "Médio Completo", "Superior Completo"))+
+  ggtitle("Nível de Escolaridade") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title = element_blank(), legend.position="bottom") +
+  ylab("Frequência relativa") + xlab(" ")
+
+
+variavel <- c(rep("Capitais e Regiões Metropolitanas" , 2) , rep("Municípios do Interior" , 2))
+condition <- rep(c("Desligado" , "Não Desligado") , 2)
+value <- c(0.6458246,0.6335265,0.3541754,0.3664735)
+data <- data.frame(variavel,condition,value)
+
+p8 <- ggplot(data, aes(fill=variavel, y=value, x=condition)) + 
+  geom_bar(position="stack", stat="identity", width = 0.40) +
+  #scale_fill_viridis(discrete = T) +
+  scale_x_discrete(labels = c("Desligado" , "Não Desligado"), 
+                   limits = c("Desligado" , "Não Desligado"))+
+  ggtitle("Região") + 
+  theme_classic(base_size = 14) + 
+  theme(legend.title = element_blank(), legend.position="bottom") +
+  ylab("Frequência relativa") + xlab(" ")
+
+
+
+grid.arrange(p, p2,p3, p4,nrow =2)
+grid.arrange(p5, p6,p7,p8,nrow =2)
+
