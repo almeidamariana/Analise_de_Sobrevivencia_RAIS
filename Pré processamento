@@ -1,6 +1,6 @@
 library(readr)
 
-# Leitura das bases de dados para cada estado do Nordeste
+# [LEITURA DA BASE DE DADOS PARA CADA ESTADO DO NORDESTE]
 
 AL2015 <- read_delim("AL2015.txt", ";", escape_double = FALSE, 
                      locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
@@ -97,6 +97,235 @@ privada <- rbind(privada1, privada2)
 
 rm(privada1, privada2, banco)
 
-write.csv(privada, "PRIVADA.txt", row.names = FALSE)
+# ------------------------------------------------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# [RETIRANDO ALGUMAS OBSERVAÇÕES]
+
+# Motivo Desligamento
+privada <- split(privada, privada$Motivo.Desligamento <22)$'TRUE'
+nrow(privada)
+table(privada$Motivo.Desligamento)
+
+# Tempo de Emprego
+privada <- split(privada, privada$Tempo.Emprego >0)$`TRUE`
+nrow(privada)
+summary(privada$Tempo.Emprego)
+
+# Idade
+privada <- split(privada,privada$Idade >17 & privada$Idade <69)$'TRUE'
+nrow(privada)
+summary(privada$Idade)
+
+# Faixa Etária (character)
+privada$Faixa.Etária <- as.numeric(privada$Faixa.Etária)
+privada <- split(privada,privada$Faixa.Etária>2 & privada$Faixa.Etária<9)$'TRUE'
+nrow(privada)
+
+
+# ------------------------------------------------------------------------------------------------------------------
+
+# [RECATEGORIZANDO VARIÁVEIS]
+
+library(forcats)
+
+# Faixa Etária
+privada$Faixa.Etária <- fct_collapse(factor(privada$Faixa.Etária),
+                                       # Ate 24 anos
+                                       "faixa1"='3',
+                                       # De 25 a 29 anos
+                                       "faixa2"='4',
+                                       # De 30 a 39 anos
+                                       "faixa3"='5',
+                                       # De 40 a 49 anos
+                                       "faixa4"='6',
+                                       # 50 anos ou mais
+                                       "faixa5"=c('7','8'))
+
+summary(privada$Faixa.Etária)
+nrow(privada)
+
+# Faixa Remuneração SM
+table(privada$Faixa.Remun.Média..SM.)
+
+privada$Faixa.Remun.Média..SM. <- fct_collapse(factor(privada$Faixa.Remun.Média..SM.),
+                                                 # Ate 1 salario minimo
+                                                 "Teto1" = c("0","1"),
+                                                 # De 1 a 3 salarios minimos                            
+                                                 "Teto2" = c("2","3","4"),
+                                                 # De 3 a 7 salarios minimos
+                                                 "Teto3" = c("5","6","7"),
+                                                 # De 7 a 15 salarios minimos
+                                                 "Teto4" = c("8","9"),
+                                                 # Mais de 15 salarios minimos
+                                                 "Teto5" = c("10","11"))
+
+summary(privada$Faixa.Remun.Média..SM.)
+nrow(privada)
+privada<-rbind(split(privada,privada$Faixa.Remun.Média..SM.=="99")$`FALSE`)
+nrow(privada)
+
+
+# Tamanho/Porte da empresa 
+
+table(privada$Tamanho.Estabelecimento)
+
+privada$Tamanho.Estabelecimento <-fct_collapse(factor(privada$Tamanho.Estabelecimento),
+                                                 # micro1
+                                                 "Micro1"=c("1","2"),
+                                                 # micro2
+                                                 "Micro2"=c("3","4"),
+                                                 # pequena
+                                                 "Pequena"=c("5","6"),
+                                                 # media
+                                                 "Media"=c("7","8"),
+                                                 # grande
+                                                 "Grande"=c("9","10"))
+
+summary(as.factor(privada$Tamanho.Estabelecimento))
+nrow(privada)
+
+# Ra?a e Cor
+
+table(privada$Raça.Cor)
+
+privada$Raça.Cor <- fct_collapse(factor(privada$Raça.Cor),
+                                   # branca
+                                   "Branca/Amarela" = c("2","6"),
+                                   # preta
+                                   "Preta/Parda" = c("4","8"),
+                                   # parda
+                                   #"Parda" = c("08"),
+                                   # outro
+                                   "Outro" = c("1","9"))
+
+summary(as.factor(privada$Raça.Cor))
+nrow(privada)
+
+# Faixa Hora Contratual
+
+table(privada$Faixa.Hora.Contrat)
+
+privada$Faixa.Hora.Contrat<-fct_collapse(factor(privada$Faixa.Hora.Contrat),
+                                           # Ate 30
+                                           "FxHora1" = c("1","2","3","4"),
+                                           # De 30 a 40
+                                           "FxHora2" = c("5"),
+                                           # De 41 a 44
+                                           "FxHora3" = c("6"))
+
+summary(as.factor(privada$Faixa.Hora.Contrat))
+nrow(privada)
+
+# Mês Admissão
+
+table(privada$Mês.Admissão)
+
+privada$Admitido <- fct_collapse(factor(privada$Mês.Admissão),
+                                   # Admitido
+                                   "Admitido"=c("1","2","3","4","5","6","7","8","9","10","11","12"),
+                                   # Não admitido
+                                   "Não admitido"=c("0"))
+
+summary(as.factor(privada$Admitido))
+nrow(privada)
+
+# Mês Desligamento
+
+table(privada$Mês.Desligamento)
+
+privada$Desligado <- fct_collapse(factor(privada$Mês.Desligamento),
+                                    # Desligado
+                                    "Desligado"= c("1","2","3","4","5","6","7","8","9","10","11","12"),
+                                    # N?o desligado
+                                    "Não desligado"= c("0"))
+
+summary(privada$Desligado)
+nrow(privada)
+
+# Sexo
+
+table(privada$Sexo.Trabalhador)
+
+privada$Sexo.Trabalhador  <- fct_collapse(factor(privada$Sexo.Trabalhador),
+                                            # Masculino 
+                                            "M" = c("1"),
+                                            # Feminino
+                                            "F" = c("2"))
+
+summary(as.factor(privada$Sexo.Trabalhador))
+nrow(privada)
+
+
+
+# Escolaridade
+
+table(privada$Escolaridade.após.2005)
+
+privada$Escolaridade.após.2005 <- fct_collapse(factor(privada$Escolaridade.após.2005),
+                                               # Analfabeto
+                                               "Analfabeto" = c("1"),
+                                               # Ate 5.A Inc + 5.A CO Fund + 6. a 9. Fund
+                                               "Fund. incompleto" = c("2", "3", "4"),
+                                               # Fund Comp + Medio Incomp
+                                               "Fund. completo" = c("5",   "6"),
+                                               # Medio Comp + Superior Incomp
+                                               "Médio completo" = c("7", "8"),
+                                               # Superior Comp + Mestrado + Doutorado
+                                               "Superior completo" = c("9","10", "11"))
+
+summary(factor(privada$Escolaridade.após.2005))
+
+# ------------------------------------------------------------------------------------------------------------------
+
+# [RENOMEANDO VARIÁVEIS] 
+
+colnames(banco)[1] <- 'motivodeslig'
+colnames(banco)[2] <- 'fxetaria'
+colnames(banco)[3] <- 'fxhoracontrat'
+colnames(banco)[4] <- 'fxremunmedia'
+
+colnames(banco)[5] <- 'escolaridade'
+colnames(banco)[6] <- 'horascontratuais'
+colnames(banco)[7] <- 'idade'
+colnames(banco)[8] <- 'mesadmissao'
+
+colnames(banco)[9] <- 'mesdeslig'
+colnames(banco)[10] <- 'municipio'
+colnames(banco)[11] <- 'nacionalidade'
+colnames(banco)[12] <- 'raca.cor'
+
+colnames(banco)[13] <- 'remunmedia'
+colnames(banco)[14] <- 'sexo'
+colnames(banco)[15] <- 'tamestab'
+colnames(banco)[16] <- 'tempoemprego'
+
+colnames(banco)[17] <- 'tipoadmissao'
+colnames(banco)[18] <- 'tipovinculo'
+colnames(banco)[19] <- 'estado'
+colnames(banco)[20] <- 'admitido'
+
+colnames(banco)[21] <- 'desligado'
+colnames(banco)[22] <- 'regiao'
+
+# ------------------------------------------------------------------------------------------------------------------
+
+# [SALVANDO A BASE DE DADOS]
+
+banco$motivodeslig <- as.factor(banco$motivodeslig)
+banco$mesadmissao <- as.factor(banco$mesadmissao)
+banco$mesdeslig <- as.factor(banco$mesdeslig)
+banco$municipio <- as.factor(banco$municipio)
+
+banco$nacionalidade <- as.factor(banco$nacionalidade)
+banco$tipoadmissao <- as.factor(banco$tipoadmissao)
+banco$tipovinculo <- as.factor(banco$tipovinculo)
+
+# Considerando indivíduos com tempo de emprego menor ou igual a 420 meses
+banco <- split(banco, banco$tempoemprego <= 420)$'TRUE'  # 9140878
+
+write.csv(banco, "banco.txt", row.names = FALSE)
+
+
+
+
+
