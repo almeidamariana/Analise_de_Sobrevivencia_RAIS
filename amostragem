@@ -147,3 +147,144 @@ rm(amostraAL,amostraBA,amostraCE,
 # [SALVANDO A AMOSTRA]
 
 write.csv(amostra, "amostra.txt", row.names = FALSE)
+
+
+# ------------------------------------------------------------------------------------------------------------
+
+# [ RECATEGORIZANDO AS VARIÁVEIS ]
+
+library(forcats)
+
+# AGRUPANDO PRETOS E PARDOS E "OUTRO" COMO REFERÊNCIA
+
+summary(factor(amostra$raca.cor))
+
+amostra$raca.cor <- fct_collapse(factor(amostra$raca.cor),
+                                 # branca
+                                 "Branca/Amarela" = c("Branca/Amarela"),
+                                 # Preta e parda
+                                 "Preta/Parda" = c("Preta/Parda"),
+                                 # outro
+                                 "Outro" = c("Outro"))
+
+amostra$raca.cor <- relevel(as.factor(amostra$raca.cor) , ref='Outro')
+
+# AGRUPANDO AS MICRO EMPRESAS E "GRANDE" COMO REFERÊNCIA
+
+summary(factor(amostra$tamestab))
+
+amostra$tamestab <- fct_collapse(factor(amostra$tamestab),
+                                 # Micro
+                                 "Micro" = c("Micro1", "Micro2"),
+                                 # Pequena
+                                 "Pequena" = c("Pequena"),
+                                 # M?dia/grande
+                                 "Media/Grande" = c("Media", "Grande"))
+
+amostra$tamestab <- relevel(as.factor(amostra$tamestab) , ref='Micro')
+
+
+# SEXO MASCULINO COMO REFERÊNCIA
+
+amostra$sexo <- relevel(as.factor(amostra$sexo) , ref='M')
+
+
+# CATEGORIZANDO O NUM. DE HORAS CONTRATUAIS E COLOCANDO 40-44 COMO REFERENCIA
+
+# FAIXA HORA CONTRATUTAL (FAIXA 3 COMO REFER?NCIA)
+
+summary(factor(amostra$fxhoracontrat))
+
+amostra$fxhoracontrat <- fct_collapse(factor(amostra$fxhoracontrat),
+                                      # At? 40 - fx 1 e 2
+                                      "At? 40" = c("FxHora1", "FxHora2"),
+                                      # 40-44 - fx 3
+                                      "40-44" = c("FxHora3"))
+
+
+amostra$fxhoracontrat <- relevel(as.factor(amostra$fxhoracontrat) , ref='40-44')
+
+# Grau de Instrução do trabalhador - Referência Analfabeto
+
+summary(factor(amostra$escolaridade))
+
+amostra$escolaridade <- relevel(as.factor(amostra$escolaridade) , ref='Analfabeto') 
+
+
+# Faixa Etária - ATÉ 24 ANOS como referência
+
+summary(factor(amostra$fxetaria))
+
+
+amostra$fxetaria <- fct_collapse(factor(amostra$fxetaria),
+                                 
+                                 "18-24" = c("faixa1"),
+                                 
+                                 "25-29" = c("faixa2"),
+                                 
+                                 "30-39" = c("faixa3"),
+                                 
+                                 "40-49" = c("faixa4"),
+                                 
+                                 "50+" = c("faixa5"))
+
+amostra$fxetaria <- fct_collapse(factor(amostra$fxetaria),
+                                 
+                                 "Até 24 anos" = c("18-24"),
+                                 
+                                 "25-49" = c("25-29", "30-39","40-49" ),
+                                 
+                                 "50+" = c("50+"))
+
+
+amostra$fxetaria <- relevel(as.factor(amostra$fxetaria) , ref="Até 24 anos")
+
+# Admissão - Não admitido como referência
+
+summary(factor(amostra$admitido))
+
+amostra$admitido <- relevel(as.factor(amostra$admitido) , ref='Não admitido')
+
+
+# faixa de remuneração média - 0 a 3 como referência
+
+summary(as.factor(amostra$fxremunmedia))
+
+amostra$fxremunmedia <- fct_collapse(factor(amostra$fxremunmedia),
+                                 
+                                 "0-3" = c("Teto1", "Teto2"),
+                                 
+                                 "3-7" = c("Teto3"),
+                                 
+                                 "7+" = c("Teto4", "Teto5"))
+
+
+amostra$fxremunmedia <- relevel(as.factor(amostra$fxremunmedia) , ref='0-3')
+
+
+# estados - retirando acentuação
+
+amostra$estado <- fct_collapse(factor(amostra$estado),
+                                 
+                                 "Alagoas" = c("Alagoas"),
+                                 
+                                 "Bahia" = c("Bahia"),
+                                 
+                                 "Cear?" = c("Ceara"),
+                                 
+                                 "Maranhão" = c("Maranhao"),
+                               
+                                 "Paraíba" = c("Paraiba"),
+                               
+                                 "Pernambuco" = c("Pernambuco"),
+                                 
+                                 "Piauí" = c("Piaui"),
+                               
+                                 "Rio Grande do Norte" = c("Rio Grande do Norte"),
+                               
+                                 "Sergipe" = c("Sergipe"))
+
+
+
+
+
