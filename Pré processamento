@@ -1,0 +1,102 @@
+library(readr)
+
+# Leitura das bases de dados para cada estado do Nordeste
+
+AL2015 <- read_delim("AL2015.txt", ";", escape_double = FALSE, 
+                     locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
+                     col_types = cols(`Vl Remun Media (SM)` = col_number(), 
+                                      `Vl Remun Media Nom` = col_number()), 
+                     trim_ws = TRUE)
+
+AL2015["Estado"]<-("Alagoas")
+
+BA2015 <- read_delim("BA2015.txt", ";", escape_double = FALSE, 
+                     locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
+                     col_types = cols(`Vl Remun Media (SM)` = col_number(), 
+                                      `Vl Remun Media Nom` = col_number()), 
+                     trim_ws = TRUE)
+
+BA2015["Estado"]<-("Bahia")
+
+
+CE2015 <- read_delim("CE2015.txt", ";", escape_double = FALSE, 
+                     locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
+                     col_types = cols(`Vl Remun Media (SM)` = col_number(), 
+                                      `Vl Remun Media Nom` = col_number()), 
+                     trim_ws = TRUE)
+
+CE2015["Estado"]<-("Ceara")
+
+MA2015 <- read_delim("MA2015.txt", ";", escape_double = FALSE, 
+                     locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
+                     col_types = cols(`Vl Remun Media (SM)` = col_number(), 
+                                      `Vl Remun Media Nom` = col_number()), 
+                     trim_ws = TRUE)
+
+MA2015["Estado"]<-("Maranhao")
+
+
+PB2015 <- read_delim("PB2015.txt", ";", escape_double = FALSE, 
+                     locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
+                     col_types = cols(`Vl Remun Media (SM)` = col_number(), 
+                                      `Vl Remun Media Nom` = col_number()), 
+                     trim_ws = TRUE)
+
+PB2015["Estado"]<-("Paraiba")
+
+PE2015 <- read_delim("PE2015.txt", ";", escape_double = FALSE, 
+                     locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
+                     col_types = cols(`Vl Remun Media (SM)` = col_number(), 
+                                      `Vl Remun Media Nom` = col_number()), 
+                     trim_ws = TRUE)
+
+PE2015["Estado"]<-("Pernambuco")
+
+PI2015 <- read_delim("PI2015.txt", ";", escape_double = FALSE, 
+                     locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
+                     col_types = cols(`Vl Remun Media (SM)` = col_number(), 
+                                      `Vl Remun Media Nom` = col_number()), 
+                     trim_ws = TRUE)
+
+PI2015["Estado"]<-("Piaui")
+
+RN2015 <- read_delim("RN2015.txt", ";", escape_double = FALSE, 
+                     locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
+                     col_types = cols(`Vl Remun Media (SM)` = col_number(), 
+                                      `Vl Remun Media Nom` = col_number()), 
+                     trim_ws = TRUE)
+
+RN2015["Estado"]<-("Rio Grande do Norte")
+
+SE2015 <- read_delim("SE2015.txt", ";", escape_double = FALSE, 
+                     locale = locale(decimal_mark = ",",encoding = "ISO-8859-1"),
+                     col_types = cols(`Vl Remun Media (SM)` = col_number(), 
+                                      `Vl Remun Media Nom` = col_number()), 
+                     trim_ws = TRUE)
+
+SE2015["Estado"]<-("Sergipe")
+
+
+# Unindo as bases de dados
+
+banco <- rbind(AL2015,BA2015,CE2015,MA2015,PB2015,PE2015,PI2015,RN2015,SE2015)
+
+rm(AL2015,BA2015,CE2015,MA2015,PB2015,PE2015,PI2015,RN2015,SE2015)
+
+# Selecionando variáveis de interesse
+
+banco <- cbind(banco[,7],banco[,13:14],banco[,16],banco[,18:20],banco[,23:24],banco[,26],
+               banco[,27],banco[,31],banco[,36],banco[,38:41],banco[,45],banco[,58])
+
+
+# Selecionando indivíduos com vínculos em empresas não públicas
+
+privada1 <- split(banco,banco$"Tipo Vinculo">=10 & banco$"Tipo Vinculo"<30)$'TRUE'
+privada2 <- split(banco,banco$"Tipo Vinculo">=40 & banco$"Tipo Vinculo"<95)$'TRUE'
+privada <- rbind(privada1, privada2)
+
+rm(privada1, privada2, banco)
+
+write.csv(privada, "PRIVADA.txt", row.names = FALSE)
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
