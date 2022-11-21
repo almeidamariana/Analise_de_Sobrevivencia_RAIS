@@ -1,0 +1,149 @@
+# AMOSTRAGEM
+
+# [REGIÕES]
+
+AL <- split(banco, banco$estado == "Alagoas")$`TRUE`
+BA <- split(banco, banco$estado == "Bahia")$`TRUE`
+CE <- split(banco, banco$estado == "Ceara")$`TRUE`
+MA <- split(banco, banco$estado == "Maranhao")$`TRUE`
+PB <- split(banco, banco$estado == "Paraiba")$`TRUE`
+PE <- split(banco, banco$estado == "Pernambuco")$`TRUE`
+PI <- split(banco, banco$estado == "Piaui")$`TRUE`
+RN <- split(banco, banco$estado == "Rio Grande do Norte")$`TRUE`
+SE <- split(banco, banco$estado == "Sergipe")$`TRUE`
+
+
+## Checando tamanho
+(dim(AL)[1]+dim(BA)[1]+dim(CE)[1]+dim(MA)[1]+dim(PB)[1]+
+    dim(PE)[1]+dim(PI)[1]+dim(RN)[1]+dim(SE)[1]) #igual a nrow
+nrow(banco)
+
+# ------------------------------------------------------------------------------------------------------------
+
+# [PROPORÇÃO - REGIÕES]
+
+## Proporção de desligados pra cada estado 
+
+table(AL$desligado) # 157315 
+p1=table(AL$desligado)[[1]]/nrow(AL) 
+
+table(BA$desligado) # 819957
+p2=table(BA$desligado)[[1]]/nrow(BA)
+
+table(CE$desligado) # 532787 
+p3=table(CE$desligado)[[1]]/nrow(CE)
+
+table(MA$desligado) # 220048 
+p4=table(MA$desligado)[[1]]/nrow(MA)
+
+table(PB$desligado) # 168852  
+p5=table(PB$desligado)[[1]]/nrow(PB)
+
+table(PE$desligado) # 602649 
+p6=table(PE$desligado)[[1]]/nrow(PE)
+
+table(PI$desligado) # 126680
+p7=table(PI$desligado)[[1]]/nrow(PI)
+
+table(RN$desligado) # 192300
+p8=table(RN$desligado)[[1]]/nrow(RN)
+
+table(SE$desligado) # 119023
+p9=table(SE$desligado)[[1]]/nrow(SE)
+
+# ------------------------------------------------------------------------------------------------------------
+
+# [AMOSTRAGEM ESTRATIFICADA]
+
+amostra <-function(N1,N2,N3,N4,N5,N6,N7,N8,N9,
+                   p1,p2,p3,p4,p5,p6,p7,p8,p9,
+                   N,z,d){
+  
+  parte1 <- ((N1)^2*p1*(1-p1))/(N1/N) 
+  parte2 <- ((N2)^2*p2*(1-p2))/(N2/N) 
+  parte3 <- ((N3)^2*p3*(1-p3))/(N3/N) 
+  parte4 <- ((N4)^2*p4*(1-p4))/(N4/N) 
+  parte5 <- ((N5)^2*p5*(1-p5))/(N5/N) 
+  parte6 <- ((N6)^2*p6*(1-p6))/(N6/N) 
+  parte7 <- ((N7)^2*p7*(1-p7))/(N7/N) 
+  parte8 <- ((N8)^2*p8*(1-p8))/(N8/N) 
+  parte9 <- ((N9)^2*p9*(1-p9))/(N9/N)
+  
+  resultado <- ((z)^2*(parte1+parte2+parte3+
+                         parte4+parte5+parte6+
+                         parte7+parte8+parte9))/((N)^2*(d)^2)
+  
+  resultado <- trunc(resultado)+1
+  
+  amostra1 <- resultado*(N1/N)
+  amostra2 <- resultado*(N2/N)
+  amostra3 <- resultado*(N3/N)
+  amostra4 <- resultado*(N4/N)
+  amostra5 <- resultado*(N5/N)
+  amostra6 <- resultado*(N6/N)
+  amostra7 <- resultado*(N7/N)
+  amostra8 <- resultado*(N8/N)
+  amostra9 <- resultado*(N9/N)
+  
+  retorno<- c(resultado,amostra1,amostra2,amostra3,
+              amostra4,amostra5,amostra6,
+              amostra7,amostra8,amostra9)
+  
+  return(retorno)
+}
+
+
+N1=nrow(AL)
+N2=nrow(BA)
+N3=nrow(CE)
+N4=nrow(MA)
+N5=nrow(PB)
+N6=nrow(PE)
+N7=nrow(PI)
+N8=nrow(RN)
+N9=nrow(SE)
+
+N=nrow(banco)
+
+amostra(N1,N2,N3,N4,N5,N6,N7,N8,N9,
+        p1,p2,p3,p4,p5,p6,p7,p8,p9,
+        N,z=1.96,d=0.02)
+
+# ========================================================================
+
+#fixar a semente 
+
+set.seed(2099) 
+
+amostraAL<-AL[runif(115,1,nrow(AL)),] #n1
+amostraBA<-BA[runif(572,1,nrow(BA)),] #n2
+amostraCE<-CE[runif(379,1,nrow(CE)),] #n3
+
+amostraMA<-MA[runif(154,1,nrow(MA)),] #n4
+amostraPB<-PB[runif(128,1,nrow(PB)),] #n5
+amostraPE<-PE[runif(421,1,nrow(PE)),] #n6
+
+amostraPI<-PI[runif(96,1,nrow(PI)),] #n7
+amostraRN<-RN[runif(141,1,nrow(RN)),] #n8
+amostraSE<-SE[runif(93,1,nrow(SE)),] #n9
+
+#[1] 2095.00000  114.76014  571.96372  378.06465  153.48939  127.95783  420.31816   95.03557
+#[9]  140.89676   92.51379
+
+# 115+572+379+154+128+421+96+141+93 #----> N = 2099
+
+amostra <- rbind(amostraAL,amostraBA,amostraCE,
+                 amostraMA, amostraPB, amostraPE,
+                 amostraPI, amostraRN, amostraSE)
+
+
+rm(amostraAL,amostraBA,amostraCE,
+   amostraMA, amostraPB, amostraPE,
+   amostraPI, amostraRN, amostraSE, AL,BA,CE,MA,PB,PE,PI,RN,SE)
+
+
+# ------------------------------------------------------------------------------------------------------------
+
+# [SALVANDO A AMOSTRA]
+
+write.csv(amostra, "amostra.txt", row.names = FALSE)
