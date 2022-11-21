@@ -1,1 +1,4 @@
 # Analise-de-Sobrevivencia
+
+FALTA O METRÓPOLE, CAPITAL E INTERIOR
+FALTA A ANÁLISE DE RESÍDUOS
