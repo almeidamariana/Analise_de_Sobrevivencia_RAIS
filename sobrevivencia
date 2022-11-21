@@ -1,0 +1,162 @@
+# [ ANÁLISE DE SOBREVIVÊNCIA ]
+
+require(survival)
+
+amostra$desligado <- ifelse(amostra$desligado == "Desligado", 0,1)
+
+tempos <- amostra[,c("tempoemprego")]
+tempos <- as.vector(tempos)
+cens <- as.numeric(amostra[,c("desligado")])
+cens <- as.vector(cens)
+
+### EXPONENCIAL 
+
+ajust1<-survreg(Surv(tempos,cens) ~ 1, dist='exponential')
+ajust1
+
+alpha<-exp(ajust1$coefficients[1]) #estimador de m?xima verossimilhan?a
+alpha
+
+#exp(-time/49.37826)
+
+### WEIBULL 
+
+ajust2<-survreg(Surv(tempos,cens) ~ 1,dist='weibull')
+ajust2
+
+alpha<-exp(ajust2$coefficients[1])
+gama<-1/ajust2$scale
+cbind(gama, alpha)
+
+#exp(-(5/48.60044)^0.9318282)
+
+### LOG NORMAL 
+
+ajust3<-survreg(Surv(tempos,cens)~1,dist='lognorm')
+ajust3
+
+#pnorm((-log(3.14053)+3.299586)/1.301223)
+
+
+##### GAMA GENERALIZADA ####
+install.packages("flexsurv")
+install.packages("Rcpp")
+
+library(flexsurv)
+library(Rcpp)
+      
+#ajust4 <- flexsurvreg(Surv(tempos,cens)~1, dist='gengamma')
+
+ajust5 <- flexsurvreg(Surv(tempos,cens)~1, dist='gengamma.orig')
+ajust5$loglik
+ajust5
+summary(ajust5)
+
+ajust5$coefficients
+coef(ajust5)
+
+pgengamma.orig(5, shape = 0.41, scale = 1.0709, k=4.226, lower.tail = FALSE, log.p = FALSE)
+
+#0.41/(1.0709^(4.226*0.41))
+
+# ------------------------------------------------------------------------------------------------------------  
+
+# [COMPARANDO OS MODELOS]
+
+AIC(ajust1,ajust2,ajust3, ajust5) 
+
+# MÉTODOS GRÁFICOS
+
+ekm <- survfit(Surv(tempos,cens)~1)
+summary(ekm)
+
+plot(ekm,lty=1, xlab="Tempo de Emprego", ylab="S(t) estimada", ylim=range(c(0,1)))
+plot(ekm,lty=1, xlab="Tempo de Emprego", ylab="S(t) estimada", ylim=range(c(0,1)), conf.int=F)
+
+
+time<-ekm$time
+alpha<- exp(ajust1$coefficients[1])
+alpha2<- exp(ajust2$coefficients[1])
+gama <- 1/ajust2$scale
+alpha3<- exp(ajust3$coefficients[1])
+gama2<-1/ajust3$scale
+
+(st<-ekm$surv)
+
+(ste<-exp(-time/alpha))
+
+(stw<-exp(-(time/alpha2)^gama))
+
+(stln<-pnorm((-log(time)+ajust3$icoef[1])/ajust3$scale))
+
+gg<-as.data.frame(summary(ajust5))
+stgg<-gg$est
+
+# Comparação dos modelos
+cbind(time,st,ste,stw,stln, stgg)
+
+par(mfrow=c(1,1))
+plot(ekm,conf.int = F,lwd= 3,xlab="Tempos",ylab="S(t)")
+lines(c(0,time),c(1,ste),lty=2,lwd= 3,col = "orange")
+lines(c(0,time),c(1,stw),lty=3,lwd= 3,col = "blue")
+lines(c(0,time),c(1,stln),lty=4,lwd= 3,col = "green")
+lines(c(0,gg$time), c(1,stgg), lty=5, lwd=3, col = "red")
+legend(270,1, lty=c(1,2,3,4,5), lwd = c(3,3,3,3,3), c("Kaplan-Meier","Exponencial","Weibull","Log-normal", "Gama Generalizada"),
+       col=c("black","orange","blue","green", "red"),bty="n")
+
+ 
+# Weibull
+plot(ekm,conf.int = F,xlab="Tempos",ylab="S(t)")
+lines(c(0,time),c(1,stw),lty=3,col = "blue")
+legend(25,0.8,lty=c(1,2),c("Kaplan-Meier","Weibull"),bty="n",cex=0.8)
+
+# Lognorm
+plot(ekm,conf.int = F,xlab="Tempos",ylab="S(t)")
+lines(c(0,time),c(1,stln),lty=4,col = "green")
+legend(25,0.8,lty=c(1,2),c("Kaplan-Meier","Log-normal"),bty="n",cex=0.8)
+
+# Gama generalizada
+plot(ekm, conf.int=F, xlab="Tempos", ylab="S(t)")
+lines(c(0,gg$time), c(1,stgg), lty=2, lwd = 2, col = "red")
+legend(25, 0.8, lty=c(1,2), c("Kaplan-Meier", "Gama generalizada"), col = c("black", "red"), bty="n", cex=0.8) 
+
+
+
+# ------------------------------------------------------------------------------------------------------------  
+# [ANÁLISE DE SOBREVIVÊNCIA COM COVARIÁVEIS]
+
+# AJUSTE DO MODELO LOGNORM
+
+ajuste <- survreg(Surv(tempos,cens)~ amostra$fxremunmedia + 
+                    amostra$idade + 
+                    amostra$raca.cor + 
+                    amostra$sexo,
+                  dist="lognorm")
+
+
+summary(ajuste1)
+AIC(ajuste1)
+
+#1.96473+ 0 +0.03238*25 + 0.29246 + 0.07384
+
+# AJUSTE DO MODELO GAMA GENERALIZADA
+
+ajuste <- flexsurvreg(Surv(tempos,cens)~ 1 +amostra$fxremunmedia + 
+                        amostra$idade + 
+                        amostra$raca.cor + 
+                        amostra$sexo, dist='gengamma.orig')
+
+summary(ajuste)
+coef(ajuste)
+ajuste$coefficients
+
+pgengamma.orig(3.704, shape = 0.79783, scale = 5.27111, k=1.58983, lower.tail = FALSE, log.p = FALSE)
+
+
+# ------------------------------------------------------------------------------------------------------------  
+# [ANÁLISE DE RESÍDUOS]
+
+
+
+
+
