@@ -184,7 +184,7 @@ privada$Tamanho.Estabelecimento <-fct_collapse(factor(privada$Tamanho.Estabeleci
 summary(as.factor(privada$Tamanho.Estabelecimento))
 nrow(privada)
 
-# Ra?a e Cor
+# Raça e Cor
 
 table(privada$Raça.Cor)
 
@@ -323,6 +323,7 @@ banco$tipovinculo <- as.factor(banco$tipovinculo)
 # Considerando indivíduos com tempo de emprego menor ou igual a 420 meses
 banco <- split(banco, banco$tempoemprego <= 420)$'TRUE'  # 9140878
 
+# Salvando a base de dados
 write.csv(banco, "banco.txt", row.names = FALSE)
 
 
