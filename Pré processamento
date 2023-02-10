@@ -277,6 +277,161 @@ summary(factor(privada$Escolaridade.após.2005))
 
 # ------------------------------------------------------------------------------------------------------------------
 
+banco <- privada
+rm(privada)
+
+# [ACRESCENTANDO VARIÁVEL REGIÃO COM CATEGORIAS CAPITAL, REGIÃO METROPOLITANA E INTERIOR]
+
+banco["regiao"]<-("interior")
+
+#ALAGOAS
+
+banco$regiao[banco$Municipio == "270040"] <- ("metropole") #atalaia
+banco$regiao[banco$Municipio == "270050"] <- ("metropole") #barra de sto antonio
+banco$regiao[banco$Municipio == "270060"] <- ("metropole") #barra de sao miguel
+banco$regiao[banco$Municipio == "270220"] <- ("metropole") #coqueiro seco
+banco$regiao[banco$Municipio == "270430"] <- ("capital")   #maceio
+banco$regiao[banco$Municipio == "270470"] <- ("metropole") #marechal deodoro
+banco$regiao[banco$Municipio == "270520"] <- ("metropole") #messias
+banco$regiao[banco$Municipio == "270550"] <- ("metropole") #murici
+banco$regiao[banco$Municipio == "270644"] <- ("metropole") #paripueira
+banco$regiao[banco$Municipio == "270690"] <- ("metropole") #pilar
+banco$regiao[banco$Municipio == "270770"] <- ("metropole") #rio largo
+banco$regiao[banco$Municipio == "270790"] <- ("metropole") #santa luzia do norte
+banco$regiao[banco$Municipio == "270890"] <- ("metropole") #satuba
+
+
+# BAHIA
+
+banco$regiao[banco$Municipio == "290570"] <- ("metropole") # cama?ari
+banco$regiao[banco$Municipio == "290650"] <- ("metropole")#candeias
+banco$regiao[banco$Municipio == "291005"] <- ("metropole")# dias d'avila
+banco$regiao[banco$Municipio == "291610"] <- ("metropole")# itaparica
+banco$regiao[banco$Municipio == "291920"] <- ("metropole")#lauro de freitas
+banco$regiao[banco$Municipio == "291992"] <- ("metropole")#madre de deus
+banco$regiao[banco$Municipio == "292100"] <- ("metropole")#mata de s?o jo?o
+banco$regiao[banco$Municipio == "292520"] <- ("metropole")#pojuca
+banco$regiao[banco$Municipio == "292740"] <- ("capital")#salvador
+banco$regiao[banco$Municipio == "292920"] <- ("metropole")#sao francisco do conde
+banco$regiao[banco$Municipio == "292950"] <- ("metropole")#sao sebastiao do pass?
+banco$regiao[banco$Municipio == "293070"] <- ("metropole")#simoes filho
+banco$regiao[banco$Municipio == "293320"] <- ("metropole")#vera cruz
+
+
+#CEARA
+
+banco$regiao[banco$Municipio == "230100"] <- ("metropole") #aquiraz 
+banco$regiao[banco$Municipio == "230350"] <- ("metropole")#cascavel
+banco$regiao[banco$Municipio == "230370"] <- ("metropole")#caucaia
+banco$regiao[banco$Municipio == "230395"] <- ("metropole")#chorozinho
+banco$regiao[banco$Municipio == "230428"] <- ("metropole")#eusebio
+banco$regiao[banco$Municipio == "230440"] <- ("capital")#fortaleza
+banco$regiao[banco$Municipio == "230495"] <- ("metropole")#guaiuba
+banco$regiao[banco$Municipio == "230523"] <- ("metropole")#horizonte
+banco$regiao[banco$Municipio == "230625"] <- ("metropole")#itaitinga
+banco$regiao[banco$Municipio == "230765"] <- ("metropole")#maracanau 
+banco$regiao[banco$Municipio == "230770"] <- ("metropole")#maranguape
+banco$regiao[banco$Municipio == "230960"] <- ("metropole")#pacajus
+banco$regiao[banco$Municipio == "230970"] <- ("metropole")#pacatuba
+banco$regiao[banco$Municipio == "231020"] <- ("metropole")#paracuru
+banco$regiao[banco$Municipio == "231025"] <- ("metropole")#paraipaba
+banco$regiao[banco$Municipio == "231085"] <- ("metropole")#pindoretama
+banco$regiao[banco$Municipio == "231240"] <- ("metropole")#s?o gon?alo do amarante
+banco$regiao[banco$Municipio == "231260"] <- ("metropole")#s?o luis do curu
+banco$regiao[banco$Municipio == "231350"] <- ("metropole")#trairi
+
+
+# MARANH?O
+
+banco$regiao[banco$Municipio == "210125"] <- ("metropole") #bacabeira 
+banco$regiao[banco$Municipio == "210510"] <- ("metropole")#icatu
+banco$regiao[banco$Municipio == "210750"] <- ("metropole")#paco do lumiar
+banco$regiao[banco$Municipio == "210945"] <- ("metropole")#raposa
+banco$regiao[banco$Municipio == "210960"] <- ("metropole")#rosario
+banco$regiao[banco$Municipio == "211020"] <- ("metropole")#santa rita
+banco$regiao[banco$Municipio == "211120"] <- ("metropole")#s?o jos? do ribamar
+banco$regiao[banco$Municipio == "211130"] <- ("capital")#s?o luis
+banco$regiao[banco$Municipio == "210110"] <- ("metropole")#axix?
+banco$regiao[banco$Municipio == "210237"] <- ("metropole")#cachoeira grande 
+banco$regiao[banco$Municipio == "210710"] <- ("metropole")#morros
+banco$regiao[banco$Municipio == "210920"] <- ("metropole")#presidente juscelino
+banco$regiao[banco$Municipio == "210020"] <- ("metropole")#alcantara
+
+# PARAIBA
+
+banco$regiao[banco$Municipio == "250180"] <- ("metropole") #bayeux 
+banco$regiao[banco$Municipio == "250320"] <- ("metropole")#cabedelo
+banco$regiao[banco$Municipio == "250460"] <- ("metropole")#conde
+banco$regiao[banco$Municipio == "250490"] <- ("metropole")#cruz do espirito santo
+banco$regiao[banco$Municipio == "250750"] <- ("capital")#jo?o pessoa
+banco$regiao[banco$Municipio == "250860"] <- ("metropole")#lucena
+banco$regiao[banco$Municipio == "251290"] <- ("metropole")#rio tinto
+banco$regiao[banco$Municipio == "251370"] <- ("metropole")#santa rita
+banco$regiao[banco$Municipio == "250060"] <- ("metropole")#alhandra
+banco$regiao[banco$Municipio == "250300"] <- ("metropole")#caapor? 
+banco$regiao[banco$Municipio == "251120"] <- ("metropole")#pedras de fogo
+
+# PERNAMBUCO
+
+banco$regiao[banco$Municipio == "260005"] <- ("metropole")#abreu e lima 
+banco$regiao[banco$Municipio == "260105"] <- ("metropole")#aracoiaba
+banco$regiao[banco$Municipio == "260290"] <- ("metropole")#cabo de santo augostinho
+banco$regiao[banco$Municipio == "260345"] <- ("metropole")#camaragibe
+banco$regiao[banco$Municipio == "260620"] <- ("metropole")#goiana
+banco$regiao[banco$Municipio == "260680"] <- ("metropole")#igarassu
+banco$regiao[banco$Municipio == "260720"] <- ("metropole")#ipojuca
+banco$regiao[banco$Municipio == "260775"] <- ("metropole")#itapissuma
+banco$regiao[banco$Municipio == "260790"] <- ("metropole")#jaboat?o dos guararapes
+banco$regiao[banco$Municipio == "260940"] <- ("metropole")#moreno 
+banco$regiao[banco$Municipio == "260960"] <- ("metropole")#olinda
+banco$regiao[banco$Municipio == "261070"] <- ("metropole")#paulista
+banco$regiao[banco$Municipio == "261160"] <- ("capital")#recife
+banco$regiao[banco$Municipio == "261370"] <- ("metropole")#s?o lourenco da mata
+
+# PIAUI
+
+banco$regiao[banco$Municipio == "220040"] <- ("metropole") #altos 
+banco$regiao[banco$Municipio == "220160"] <- ("metropole")#beneditinos
+banco$regiao[banco$Municipio == "220273"] <- ("metropole")#coivaras
+banco$regiao[banco$Municipio == "220325"] <- ("metropole")#curralinhos
+banco$regiao[banco$Municipio == "220330"] <- ("metropole")#demerval lob?o
+banco$regiao[banco$Municipio == "220550"] <- ("metropole")#jose de freitas
+banco$regiao[banco$Municipio == "220555"] <- ("metropole")#lagoa alegre
+banco$regiao[banco$Municipio == "220558"] <- ("metropole")#lagoa do piaui
+banco$regiao[banco$Municipio == "220630"] <- ("metropole")#miguel le?o
+banco$regiao[banco$Municipio == "220640"] <- ("metropole")#monsenhor gil 
+banco$regiao[banco$Municipio == "220672"] <- ("metropole")#naz?ria
+banco$regiao[banco$Municipio == "220779"] <- ("metropole")#pau d'arco do piaui
+banco$regiao[banco$Municipio == "221100"] <- ("capital")#teresina
+banco$regiao[banco$Municipio == "221110"] <- ("metropole")#uni?o
+
+# RIO GRANDE DO NORTE
+
+banco$regiao[banco$Municipio == "240120"] <- ("metropole") #ar?s 
+banco$regiao[banco$Municipio == "240170"] <- ("metropole")#bom jesus
+banco$regiao[banco$Municipio == "240360"] <- ("metropole")#extremoz
+banco$regiao[banco$Municipio == "240420"] <- ("metropole")#goianinha
+banco$regiao[banco$Municipio == "240460"] <- ("metropole")#ielmo marinho
+banco$regiao[banco$Municipio == "240710"] <- ("metropole")#maca?ba
+banco$regiao[banco$Municipio == "240750"] <- ("metropole")#maxaranguape
+banco$regiao[banco$Municipio == "240780"] <- ("metropole")#monte alegre
+banco$regiao[banco$Municipio == "240810"] <- ("capital")#natal
+banco$regiao[banco$Municipio == "240820"] <- ("metropole")#nisia floresta 
+banco$regiao[banco$Municipio == "240325"] <- ("metropole")#parnamirim
+banco$regiao[banco$Municipio == "241200"] <- ("metropole")#s?o gon?alo do amarante
+banco$regiao[banco$Municipio == "241220"] <- ("metropole")#s?o jose de mipibu
+banco$regiao[banco$Municipio == "241480"] <- ("metropole")#vera cruz
+
+# SERGIPE 
+
+banco$regiao[banco$Municipio == "280030"] <- ("capital") #aracaju 
+banco$regiao[banco$Municipio == "280060"] <- ("metropole")#barra dos coqueiros
+banco$regiao[banco$Municipio == "280480"] <- ("metropole")#nossa senhora do socorro
+banco$regiao[banco$Municipio == "280670"] <- ("metropole")#s?o crist?v?o
+
+
+# ------------------------------------------------------------------------------------------------------------------
+
 # [RENOMEANDO VARIÁVEIS] 
 
 colnames(banco)[1] <- 'motivodeslig'
