@@ -17,7 +17,6 @@ ajust1
 alpha<-exp(ajust1$coefficients[1]) #estimador de m?xima verossimilhan?a
 alpha
 
-#exp(-time/49.37826)
 
 ### WEIBULL 
 
@@ -28,24 +27,16 @@ alpha<-exp(ajust2$coefficients[1])
 gama<-1/ajust2$scale
 cbind(gama, alpha)
 
-#exp(-(5/48.60044)^0.9318282)
-
 ### LOG NORMAL 
 
 ajust3<-survreg(Surv(tempos,cens)~1,dist='lognorm')
 ajust3
 
-#pnorm((-log(3.14053)+3.299586)/1.301223)
-
-
-##### GAMA GENERALIZADA ####
+### GAMA GENERALIZADA 
 install.packages("flexsurv")
 install.packages("Rcpp")
-
 library(flexsurv)
 library(Rcpp)
-      
-#ajust4 <- flexsurvreg(Surv(tempos,cens)~1, dist='gengamma')
 
 ajust5 <- flexsurvreg(Surv(tempos,cens)~1, dist='gengamma.orig')
 ajust5$loglik
@@ -55,9 +46,8 @@ summary(ajust5)
 ajust5$coefficients
 coef(ajust5)
 
-pgengamma.orig(5, shape = 0.41, scale = 1.0709, k=4.226, lower.tail = FALSE, log.p = FALSE)
+#pgengamma.orig(5, shape = 0.41, scale = 1.0709, k=4.226, lower.tail = FALSE, log.p = FALSE)
 
-#0.41/(1.0709^(4.226*0.41))
 
 # ------------------------------------------------------------------------------------------------------------  
 
@@ -127,7 +117,7 @@ legend(25, 0.8, lty=c(1,2), c("Kaplan-Meier", "Gama generalizada"), col = c("bla
 
 # AJUSTE DO MODELO LOGNORM
 
-ajuste <- survreg(Surv(tempos,cens)~ amostra$fxremunmedia + 
+ajuste1 <- survreg(Surv(tempos,cens)~ amostra$fxremunmedia + 
                     amostra$idade + 
                     amostra$raca.cor + 
                     amostra$sexo,
@@ -155,6 +145,57 @@ pgengamma.orig(3.704, shape = 0.79783, scale = 5.27111, k=1.58983, lower.tail = 
 
 # ------------------------------------------------------------------------------------------------------------  
 # [ANÁLISE DE RESÍDUOS]
+
+resdev <- residuals(ajuste1, type="deviance")
+summary(resdev) # ylim
+
+par(mfrow=c(1,1))
+posit <- cbind(seq(1,length(resdev)), resdev)
+plot(posit[which(cens==1),1], resdev[which(cens==1)], 
+     xlab=" ", ylab="Martingale-type residual", main=" ", 
+     ylim=c(-4, 3), pch=16, col="blue", cex=0.8)
+points(posit[which(cens==0),1], resdev[which(cens==0)], 
+       pch=17, col="blue", cex=0.8)
+       
+       
+# WARM PLOTS
+
+install.packages("gamlss")
+library(gamlss)
+
+
+model <- gamlss(Surv(tempos, cens) ~ amostra$fxremunmedia + 
+                  amostra$idade + 
+                  amostra$raca.cor + 
+                  amostra$sexo, data = amostra,
+                family=cens(LOGNO))
+
+summary(model)
+
+set.seed(1)
+wp(model)
+
+# GAMA GENERALIZADA
+
+modelgama <- gamlss(Surv(tempos, cens) ~ amostra$fxremunmedia + 
+                  amostra$idade + 
+                  amostra$raca.cor +
+                    amostra$sexo, 
+                  data = amostra,
+                family=cens(GG))
+                
+summary(modelgama)
+
+set.seed(2)
+wp(modelgama)
+
+##############################################################################################################
+# FALTA COLOCAR AQUELE RESULTADO DA PROBABILIDADE AQUI
+
+
+
+
+
 
 
 
