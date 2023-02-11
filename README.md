@@ -1,4 +1,4 @@
-TÍTULO: Avaliação dos fatores associados ao desligamento dos funcionários de empresas privadas.
+            TÍTULO: Avaliação dos fatores associados ao desligamento dos funcionários de empresas privadas.
 
 Bolsista PIBIC/UFBA (2020/2021): Mariana Thais Almeida 
 
