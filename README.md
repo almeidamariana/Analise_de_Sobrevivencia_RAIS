@@ -1,7 +1,9 @@
 TÍTULO: Avaliação dos fatores associados ao desligamento dos funcionários de empresas privadas.
 
 Bolsista PIBIC/UFBA (2020/2021): Mariana Thais Almeida 
+
 Orientadora: Profa. Dra. Edleide de Brito
+
 Colaboradores: Fernando Moraes e Rafael Toledo  
 
 Link para apresentação no Congresso UFBA: https://www.youtube.com/watch?v=qrtda3BiN9Q&t=2s
