@@ -189,9 +189,6 @@ summary(modelgama)
 set.seed(2)
 wp(modelgama)
 
-##############################################################################################################
-# FALTA COLOCAR AQUELE RESULTADO DA PROBABILIDADE AQUI
-
 
 
 
